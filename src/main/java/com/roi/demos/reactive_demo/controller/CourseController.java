@@ -11,8 +11,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping(path = "api/course",produces = MediaType.TEXT_EVENT_STREAM_VALUE
-        ,consumes = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "api/course", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 public class CourseController {
 
     private final CourseServiceFauxImpl svc;
@@ -26,10 +25,20 @@ public class CourseController {
         return svc.getCurrentCourses();
     }
 
-    @PostMapping
+    @GetMapping(path = "{keyword}")
+    public Mono<Course> getCourseByKeyword(@PathVariable("keyword") String term){
+        return svc.findCourseByTitleContaining(term);
+    }
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Mono<Course>> getCourseByTitle(@RequestBody Mono<SearchDto> search){
         return ResponseEntity.status(HttpStatus.FOUND)
                 .body(svc.findCourseByTitle(search));
+    }
+
+    @PostMapping(path = "like",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getCourseByTitleContaining(@RequestBody Mono<SearchDto> search){
+        return ResponseEntity.ok(svc.findCourseByTitleContaining(search));
     }
 
 }

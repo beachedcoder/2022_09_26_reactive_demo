@@ -36,4 +36,8 @@ public class CourseServiceFauxImpl implements CourseService{
     public Flux<Course> findCourseByTitleContaining(Mono<SearchDto> search) {
         return null;
     }
+
+    public Mono<Course> findCourseByTitleContaining(String term) {
+        return dao.findFirstCourseByTitleContaining(term);
+    }
 }

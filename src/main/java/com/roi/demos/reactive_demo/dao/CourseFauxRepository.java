@@ -11,6 +11,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Repository
@@ -35,11 +36,11 @@ public class CourseFauxRepository implements CourseDao, AuthorDao
 
     @Override
     public Flux<Course> findCourseByTitleContaining(Search phrase) {
-        return Flux.fromStream(
+        return Flux.fromIterable(
                 this.fauxRepo.stream().filter(c->
                         c.getTitle().contains(phrase.getTitle()))
-                        .peek(c->log.info("Found::"+c))
-        );
+                        .peek(c->log.info("Found:: "+c))
+                        .toList());
     }
 
     @Override
@@ -72,5 +73,9 @@ public class CourseFauxRepository implements CourseDao, AuthorDao
                 .filter(a->a.getEmailAddress().equalsIgnoreCase(emailAddress))
                 .peek(t->log.info("lastname search:: "+t))
                 .findFirst());
+    }
+
+    public Mono<Course> findFirstCourseByTitleContaining(String term) {
+        return Mono.justOrEmpty(this.fauxRepo.stream().filter(t->t.getTitle().contains(term)).findFirst());
     }
 }
