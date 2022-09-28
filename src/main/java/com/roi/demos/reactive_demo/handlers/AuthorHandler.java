@@ -2,6 +2,7 @@ package com.roi.demos.reactive_demo.handlers;
 
 import com.roi.demos.reactive_demo.domain.Author;
 import com.roi.demos.reactive_demo.domain.SearchDto;
+import com.roi.demos.reactive_demo.repository.AuthorRepository;
 import com.roi.demos.reactive_demo.svc.AuthorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,9 +17,9 @@ import static org.springframework.web.reactive.function.server.ServerResponse.*;
 @Component
 public class AuthorHandler {
 
-    private final AuthorService svc;
+    private final AuthorRepository svc;
 
-    public AuthorHandler(AuthorService authorRef) {
+    public AuthorHandler(AuthorRepository authorRef) {
         this.svc = authorRef;
     }
 
@@ -27,17 +28,17 @@ public class AuthorHandler {
     }
     public Mono<ServerResponse> getCurrentAuthors(ServerRequest request){
         return accepted().contentType(MediaType.TEXT_EVENT_STREAM)
-                .body(svc.getActiveAuthors(), Author.class);
+                .body(svc.findAll(), Author.class);
     }
 
-    public Mono<ServerResponse> getAuthorByLastName(ServerRequest serverRequest) {
-        Mono<SearchDto> searchDto = serverRequest.bodyToMono(SearchDto.class);
-        return ServerResponse.status(HttpStatus.FOUND)
-                .body(svc.getAuthorsByLastName(searchDto),Author.class);
-    }
-
-    public Mono<ServerResponse> getAuthorByEmail(ServerRequest serverRequest) {
-        Mono<SearchDto> searchDto = serverRequest.bodyToMono(SearchDto.class);
-        return ok().body(svc.getAuthorByEmailAddress(searchDto), Author.class);
-    }
+//    public Mono<ServerResponse> getAuthorByLastName(ServerRequest serverRequest) {
+//        Mono<SearchDto> searchDto = serverRequest.bodyToMono(SearchDto.class);
+//        return ServerResponse.status(HttpStatus.FOUND)
+//                .body(svc.findAllByLastName(searchDto),Author.class);
+//    }
+//
+//    public Mono<ServerResponse> getAuthorByEmail(ServerRequest serverRequest) {
+//        Mono<SearchDto> searchDto = serverRequest.bodyToMono(SearchDto.class);
+//        return ok().body(svc.getAuthorByEmailAddress(searchDto), Author.class);
+//    }
 }
