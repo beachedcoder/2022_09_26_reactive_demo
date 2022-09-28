@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-@Service
+@Service("fauxcourse")
 public class CourseServiceFauxImpl implements CourseService{
 
     private final Logger log = LoggerFactory.getLogger(CourseServiceFauxImpl.class);
@@ -37,6 +37,7 @@ public class CourseServiceFauxImpl implements CourseService{
         return null;
     }
 
+    @Override
     public Mono<Course> findCourseByTitleContaining(String term) {
         return dao.findFirstCourseByTitleContaining(term);
     }

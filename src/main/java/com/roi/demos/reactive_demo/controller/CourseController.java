@@ -2,7 +2,7 @@ package com.roi.demos.reactive_demo.controller;
 
 import com.roi.demos.reactive_demo.domain.Course;
 import com.roi.demos.reactive_demo.domain.SearchDto;
-import com.roi.demos.reactive_demo.svc.CourseServiceFauxImpl;
+import com.roi.demos.reactive_demo.svc.CourseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +14,9 @@ import reactor.core.publisher.Mono;
 @RequestMapping(path = "api/course", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
 public class CourseController {
 
-    private final CourseServiceFauxImpl svc;
+    private final CourseService svc;
 
-    public CourseController(CourseServiceFauxImpl svcRef) {
+    public CourseController(CourseService svcRef) {
         this.svc = svcRef;
     }
 

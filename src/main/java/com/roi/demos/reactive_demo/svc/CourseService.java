@@ -9,4 +9,6 @@ public interface CourseService {
     Flux<Course> getCurrentCourses();
     Mono<Course> findCourseByTitle(Mono<SearchDto> search);
     Flux<Course> findCourseByTitleContaining(Mono<SearchDto> search);
+
+    Mono<Course> findCourseByTitleContaining(String term);
 }

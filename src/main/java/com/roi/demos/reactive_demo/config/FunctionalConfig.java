@@ -17,9 +17,10 @@ public class FunctionalConfig {
                                                                 AuthorHandler authorHandle){
         return RouterFunctions.route()
                 .path("api",rp ->
-                    rp.GET("author",authorHandle::welcome)
+                    rp.GET("author",authorHandle::getCurrentAuthors)
                     .path("func", f ->
-                        f.GET("hello",handleHello::welcome))).build();
+                        f.GET("hello",handleHello::welcome))
+                ).build();
 
     }
 }
